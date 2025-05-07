@@ -94,6 +94,35 @@ std::set<std::string> boggle(const std::set<std::string>& dict, const std::set<s
 bool boggleHelper(const std::set<std::string>& dict, const std::set<std::string>& prefix, const std::vector<std::vector<char> >& board, 
 								   std::string word, std::set<std::string>& result, unsigned int r, unsigned int c, int dr, int dc)
 {
-//add your solution here!
+  //returns false if the row or column parameter inputed is greater then the size of the board
+  if(r>=board.size()||c>=board[0].size()){
+    return false;
+  }
 
+  word+=board[r][c];
+
+  // passes if word is not a prefix
+  if(prefix.find(word)==prefix.end()){
+    // passes if the word is not in the dictionary
+    if(dict.find(word)==dict.end()){
+      return false;
+    }
+  }  
+  
+  if(prefix.find(word)==prefix.end()){
+    if(dict.find(word)!=dict.end()){
+      result.insert(word);
+      return true;
+    }
+    return false;
+  }
+  unsigned int rdr=r+dr;
+  unsigned int cdc=c+dc;
+  bool bigger=boggleHelper(dict, prefix, board, word, result, rdr, cdc, dr, dc);
+
+  if(!bigger&& dict.find(word)!=dict.end()){
+    result.insert(word);
+    bigger=true;
+  }
+  return bigger;
 }
